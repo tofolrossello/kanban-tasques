@@ -1,0 +1,82 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+header,
+footer {
+  background-color: #333;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+/* Formulari */
+.form-container {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.form-container form div {
+  margin-bottom: 0.75rem;
+}
+
+.form-container label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+/* Controls */
+.controls {
+  grid-column: 2 / -1;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+/* Kanban */
+.kanban-board {
+  grid-column: 2 / -1;
+  display: flex;
+  gap: 1rem;
+}
+
+.kanban-column {
+  flex: 1;
+  background-color: #eaeaea;
+  padding: 0.5rem;
+  border-radius: 6px;
+}
+
+.kanban-tasks {
+  min-height: 100px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+
+  .controls,
+  .kanban-board {
+    grid-column: 1;
+  }
+
+  .kanban-board {
+    flex-direction: column;
+  }
+}
