@@ -2,6 +2,8 @@ const STORAGE_KEY = "tasquesKanban";
 
 let tasques = [];
 
+let tascaEditantId = null;
+
 const form = document.getElementById("task-form");
 const inputTitol = document.getElementById("titol");
 const inputDescripcio = document.getElementById("descripcio");
@@ -52,6 +54,16 @@ function renderTauler(tasques) {
 
     card.appendChild(selectEstat);
 
+    const btnEditar = document.createElement("button");
+    btnEditar.textContent = "Editar";
+    btnEditar.classList.add("btn-editar");
+
+    btnEditar.addEventListener("click", () => {
+    carregarTascaAlFormulari(tasca.id);
+});
+
+    card.appendChild(btnEditar);
+
     const btnEliminar = document.createElement("button");
     btnEliminar.textContent = "Eliminar";
     btnEliminar.classList.add("btn-eliminar");
@@ -60,13 +72,27 @@ function renderTauler(tasques) {
     eliminarTasca(tasca.id);
 });
 
-card.appendChild(btnEliminar);
-
+  card.appendChild(btnEliminar);
 
     if (tasca.estat === "perFer") colPerFer.appendChild(card);
     else if (tasca.estat === "enCurs") colEnCurs.appendChild(card);
     else if (tasca.estat === "fet") colFet.appendChild(card);
   });
+}
+
+  function carregarTascaAlFormulari(id) {
+  const tasca = tasques.find((t) => t.id === id);
+  if (!tasca) return;
+
+  inputTitol.value = tasca.titol;
+  inputDescripcio.value = tasca.descripcio;
+  selectPrioritat.value = tasca.prioritat;
+  inputData.value = tasca.dataVenciment;
+
+  tascaEditantId = id;
+
+  form.querySelector("button[type='submit']").textContent =
+    "Guardar canvis";
 }
 
 function canviarEstat(id, nouEstat) {
@@ -103,20 +129,38 @@ function init() {
       return;
     }
 
-    const novaTasca = {
-      id: Date.now().toString(),
-      titol: titol,
-      descripcio: inputDescripcio.value.trim(),
-      prioritat: selectPrioritat.value,
-      dataVenciment: inputData.value,
-      estat: "perFer",
-      creatEl: new Date().toISOString(),
-    };
+    if (tascaEditantId) {
+  // MODE EDITAR
+  const tasca = tasques.find((t) => t.id === tascaEditantId);
+  if (!tasca) return;
 
-    tasques.push(novaTasca);
-    guardarTasques(tasques);
-    renderTauler(tasques);
-    form.reset();
+  tasca.titol = titol;
+  tasca.descripcio = inputDescripcio.value.trim();
+  tasca.prioritat = selectPrioritat.value;
+  tasca.dataVenciment = inputData.value;
+} else {
+  // MODE CREAR
+  const novaTasca = {
+    id: Date.now().toString(),
+    titol: titol,
+    descripcio: inputDescripcio.value.trim(),
+    prioritat: selectPrioritat.value,
+    dataVenciment: inputData.value,
+    estat: "perFer",
+    creatEl: new Date().toISOString(),
+  };
+
+  tasques.push(novaTasca);
+}
+
+guardarTasques(tasques);
+renderTauler(tasques);
+form.reset();
+
+tascaEditantId = null;
+form.querySelector("button[type='submit']").textContent = "Afegir tasca";
+
+
   });
 }
 
