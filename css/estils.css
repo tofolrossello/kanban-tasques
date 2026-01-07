@@ -100,3 +100,18 @@ main {
 .task-card.alta {
   border-color: red;
 }
+
+.btn-eliminar {
+  margin-top: 0.5rem;
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-eliminar:hover {
+  background-color: #c9302c;
+}
+

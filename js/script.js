@@ -52,6 +52,17 @@ function renderTauler(tasques) {
 
     card.appendChild(selectEstat);
 
+    const btnEliminar = document.createElement("button");
+    btnEliminar.textContent = "Eliminar";
+    btnEliminar.classList.add("btn-eliminar");
+
+    btnEliminar.addEventListener("click", () => {
+    eliminarTasca(tasca.id);
+});
+
+card.appendChild(btnEliminar);
+
+
     if (tasca.estat === "perFer") colPerFer.appendChild(card);
     else if (tasca.estat === "enCurs") colEnCurs.appendChild(card);
     else if (tasca.estat === "fet") colFet.appendChild(card);
@@ -66,6 +77,16 @@ function canviarEstat(id, nouEstat) {
   guardarTasques(tasques);
   renderTauler(tasques);
 }
+
+function eliminarTasca(id) {
+  const confirmar = confirm("Segur que vols eliminar aquesta tasca?");
+  if (!confirmar) return;
+
+  tasques = tasques.filter((t) => t.id !== id);
+  guardarTasques(tasques);
+  renderTauler(tasques);
+}
+
 
 
 // Inicialització
