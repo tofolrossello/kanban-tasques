@@ -32,17 +32,41 @@ function renderTauler(tasques) {
     const card = document.createElement("div");
     card.classList.add("task-card", tasca.prioritat);
 
+    const selectEstat = document.createElement("select");
+    selectEstat.innerHTML = `
+      <option value="perFer">Per fer</option>
+      <option value="enCurs">En curs</option>
+      <option value="fet">Fet</option>
+    `;
+    selectEstat.value = tasca.estat;
+
+    selectEstat.addEventListener("change", () => {
+      canviarEstat(tasca.id, selectEstat.value);
+    });
+
     card.innerHTML = `
       <h4>${tasca.titol}</h4>
       <p>${tasca.descripcio || ""}</p>
       <small>Prioritat: ${tasca.prioritat}</small>
     `;
 
+    card.appendChild(selectEstat);
+
     if (tasca.estat === "perFer") colPerFer.appendChild(card);
     else if (tasca.estat === "enCurs") colEnCurs.appendChild(card);
     else if (tasca.estat === "fet") colFet.appendChild(card);
   });
 }
+
+function canviarEstat(id, nouEstat) {
+  const tasca = tasques.find((t) => t.id === id);
+  if (!tasca) return;
+
+  tasca.estat = nouEstat;
+  guardarTasques(tasques);
+  renderTauler(tasques);
+}
+
 
 // Inicialització
 function init() {
