@@ -14,6 +14,16 @@ const colPerFer = document.getElementById("perFer");
 const colEnCurs = document.getElementById("enCurs");
 const colFet = document.getElementById("fet");
 
+const filterEstat = document.getElementById("filter-estat");
+const filterPrioritat = document.getElementById("filter-prioritat");
+const searchText = document.getElementById("search-text");
+
+const filtres = {
+  estat: "tots",
+  prioritat: "totes",
+  text: "",
+};
+
 // Carrega tasques del localStorage
 function carregarTasques() {
   const data = localStorage.getItem(STORAGE_KEY);
@@ -101,7 +111,7 @@ function canviarEstat(id, nouEstat) {
 
   tasca.estat = nouEstat;
   guardarTasques(tasques);
-  renderTauler(tasques);
+  aplicarFiltres();
 }
 
 function eliminarTasca(id) {
@@ -110,7 +120,7 @@ function eliminarTasca(id) {
 
   tasques = tasques.filter((t) => t.id !== id);
   guardarTasques(tasques);
-  renderTauler(tasques);
+  aplicarFiltres();
 }
 
 
@@ -118,7 +128,7 @@ function eliminarTasca(id) {
 // Inicialització
 function init() {
   tasques = carregarTasques();
-  renderTauler(tasques);
+  aplicarFiltres();
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -154,7 +164,7 @@ function init() {
 }
 
 guardarTasques(tasques);
-renderTauler(tasques);
+aplicarFiltres();
 form.reset();
 
 tascaEditantId = null;
@@ -162,6 +172,46 @@ form.querySelector("button[type='submit']").textContent = "Afegir tasca";
 
 
   });
+
+filterEstat.addEventListener("change", () => {
+  filtres.estat = filterEstat.value;
+  aplicarFiltres();
+});
+
+filterPrioritat.addEventListener("change", () => {
+  filtres.prioritat = filterPrioritat.value;
+  aplicarFiltres();
+});
+
+searchText.addEventListener("input", () => {
+  filtres.text = searchText.value.toLowerCase();
+  aplicarFiltres();
+});
+
+}
+
+function getTasquesFiltrades(tasques, filtres) {
+  return tasques.filter((tasca) => {
+    const coincideixEstat =
+      filtres.estat === "tots" || tasca.estat === filtres.estat;
+
+    const coincideixPrioritat =
+      filtres.prioritat === "totes" ||
+      tasca.prioritat === filtres.prioritat;
+
+    const text = filtres.text;
+    const coincideixText =
+      !text ||
+      tasca.titol.toLowerCase().includes(text) ||
+      (tasca.descripcio || "").toLowerCase().includes(text);
+
+    return coincideixEstat && coincideixPrioritat && coincideixText;
+  });
+}
+
+function aplicarFiltres() {
+  const tasquesFiltrades = getTasquesFiltrades(tasques, filtres);
+  renderTauler(tasquesFiltrades);
 }
 
 document.addEventListener("DOMContentLoaded", init);
