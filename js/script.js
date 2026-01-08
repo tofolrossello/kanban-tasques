@@ -18,6 +18,13 @@ const filterEstat = document.getElementById("filter-estat");
 const filterPrioritat = document.getElementById("filter-prioritat");
 const searchText = document.getElementById("search-text");
 
+const statTotal = document.getElementById("stat-total");
+const statPerFer = document.getElementById("stat-perfer");
+const statEnCurs = document.getElementById("stat-encurs");
+const statFet = document.getElementById("stat-fet");
+const statPercent = document.getElementById("stat-percent");
+
+
 const filtres = {
   estat: "tots",
   prioritat: "totes",
@@ -212,6 +219,25 @@ function getTasquesFiltrades(tasques, filtres) {
 function aplicarFiltres() {
   const tasquesFiltrades = getTasquesFiltrades(tasques, filtres);
   renderTauler(tasquesFiltrades);
+  actualitzarEstadistiques(tasques);
 }
+
+function actualitzarEstadistiques(tasques) {
+  const total = tasques.length;
+
+  const perFer = tasques.filter((t) => t.estat === "perFer").length;
+  const enCurs = tasques.filter((t) => t.estat === "enCurs").length;
+  const fet = tasques.filter((t) => t.estat === "fet").length;
+
+  const percentatge =
+    total === 0 ? 0 : Math.round((fet / total) * 100);
+
+  statTotal.textContent = total;
+  statPerFer.textContent = perFer;
+  statEnCurs.textContent = enCurs;
+  statFet.textContent = fet;
+  statPercent.textContent = `${percentatge}%`;
+}
+
 
 document.addEventListener("DOMContentLoaded", init);
