@@ -33,11 +33,11 @@ README.md
 
 - [x] Issue 1: Estructura base del projecte
 - [x] Issue 2: Model de dades i persistència
-- [x] Issue 3: CRUD complet i renderització del Kanban
-- [ ] Issue 4: Filtres, cerca i estadístiques
-- [ ] Issue 5: Responsive final, desplegament i documentació
+- [x] Issue 3: CRUD complet de tasques
+- [x] Issue 4: Filtres, cerca i estadístiques
+- [x] Issue 5: Responsive, desplegament i documentació final
 
 ## Enllaços
 
 - Repositori GitHub: https://github.com/tofolrossello/kanban-tasques
-- GitHub Pages: pendent
+- GitHub Pages: https://tofolrossello.github.io/kanban-tasques/
