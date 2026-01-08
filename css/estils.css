@@ -115,3 +115,13 @@ main {
   background-color: #c9302c;
 }
 
+@media (max-width: 768px) {
+  .kanban-board {
+    flex-direction: column;
+  }
+
+  .kanban-column {
+    width: 100%;
+  }
+}
+
